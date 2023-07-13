@@ -15,7 +15,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 
 
 @Component
-public class JwtUility {
+public class JwtUitility {
     final String SIGNATURE = "ratnadip";
     @Autowired
     LoginDto loginDto;

@@ -7,7 +7,8 @@ import com.example.EmployeePayroll.dto.ResponseDto;
 import com.example.EmployeePayroll.exception.CustomException;
 import com.example.EmployeePayroll.model.Employee;
 import com.example.EmployeePayroll.repository.EmployeeRepo;
-import com.example.EmployeePayroll.utility.JwtUility;
+import com.example.EmployeePayroll.utility.EmailSenderUitility;
+import com.example.EmployeePayroll.utility.JwtUitility;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,13 +24,22 @@ public class EmployeeServiceImpl implements EmployeeService {
     private ModelMapper modelMapper;
 
     @Autowired
-    private JwtUility jwtUility;
+    EmailSenderUitility emailSenderUitility;
+
+    @Autowired
+    private JwtUitility jwtUility;
 
     @Override
     public String addEmployee(EmployeeDto employeeDto) {
         Employee employee = modelMapper.map(employeeDto, Employee.class);
-        employeeRepo.save(employee);
-        return "added successfully...";
+        Employee employeeSave = employeeRepo.save(employee);
+        if(employeeSave!=null){
+            emailSenderUitility.sendSimpleMail(employeeSave.getEmail(),"Employee Payroll",employeeSave.toString());
+            return "added successfully...";
+        }else {
+            throw new CustomException("filed...");
+        }
+
     }
 
     @Override
@@ -105,6 +115,7 @@ public class EmployeeServiceImpl implements EmployeeService {
                 loginResponse.setToken(token);
                 if (!employee.get().isLogin()) {
                     loginResponse.setMessage("User logged in successfully...");
+                    emailSenderUitility.sendSimpleMail(loginDto.getEmail(), "Employee Payroll", "login successfully...");
                     employee.get().setLogin(true);
                     employeeRepo.save(employee.get());
                 }else {
@@ -117,6 +128,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         } else {
             throw new CustomException("Invalid email.");
        }
+
     }
 
     @Override

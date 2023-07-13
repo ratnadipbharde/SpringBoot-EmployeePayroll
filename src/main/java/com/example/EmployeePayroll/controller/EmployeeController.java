@@ -29,7 +29,7 @@ public class EmployeeController {
     }
 
     @PostMapping("/getEmployeeById")
-    public ResponseDto getEmployeeById(@RequestParam int id, @RequestHeader(required = false) String token){
+    public ResponseDto getEmployeeById(@RequestParam int id, @RequestHeader String token){
         if (token!=null) {
             return employeeService.getEmployeeById(id, token);
         }else {
