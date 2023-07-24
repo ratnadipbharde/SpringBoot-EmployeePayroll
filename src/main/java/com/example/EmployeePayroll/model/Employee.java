@@ -1,17 +1,13 @@
 package com.example.EmployeePayroll.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import javax.persistence.*;
 import lombok.Data;
-import lombok.Getter;
 
+import java.util.Date;
 import java.util.List;
 
 @Entity
 @Data
-@Getter
 public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -20,6 +16,7 @@ public class Employee {
     private String password;
     private String name;
     private String gender;
+    @ElementCollection
     private List<String> department;
     private Long salary;
     private String startDate;
@@ -27,4 +24,3 @@ public class Employee {
     private String roll;
     private boolean isLogin;
 }
-

@@ -17,6 +17,6 @@ public class EmailSenderUitility {
             simpleMailMessage.setTo(emailId);
             simpleMailMessage.setSubject(subject);
             simpleMailMessage.setText(body);
-            javaMailSender.send(simpleMailMessage);
+           // javaMailSender.send(simpleMailMessage);
     }
 }
